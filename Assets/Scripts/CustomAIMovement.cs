@@ -6,8 +6,7 @@ using Pathfinding;
 public class CustomAIMovement : MonoBehaviour
 {
     private Transform target;
-    private Transform playerTransform;
-    public GameObject player;
+
     private float distance;
 
     public int meleeDamage;
@@ -35,8 +34,8 @@ public class CustomAIMovement : MonoBehaviour
         {
             Randomizer();
         }
-        player = GameObject.Find("Player");
-        target = player.GetComponent<Transform>();
+
+        target = FindObjectOfType<Player>().transform;
 
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
