@@ -29,8 +29,10 @@ public class Player : MonoBehaviour
     public playerStates prevState;
 
     private AudioSource soundSrc;
+    public AudioSource footSteps;
 
     public float speed;
+    private float crouchSpeed = 1;
     #endregion
 
     #region LifeCycle
@@ -147,8 +149,20 @@ public class Player : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            crouchSpeed = 0.5f;
+        }
+        else
+        {
+            crouchSpeed = 1;
+        }
 
-        transform.Translate(new Vector2(x, y) * speed * Time.fixedDeltaTime);
+        Vector2 dir = new Vector2(x, y);
+
+        footSteps.volume = dir.magnitude * crouchSpeed / 2;
+
+        transform.Translate(dir * speed  * crouchSpeed * Time.fixedDeltaTime);
     }
     #endregion
 
