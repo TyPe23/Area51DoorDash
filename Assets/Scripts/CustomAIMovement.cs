@@ -1,8 +1,11 @@
 using Pathfinding;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class CustomAIMovement : MonoBehaviour
 {
+    public List<Transform> waypoints = new List<Transform>();
     private Transform player;
 
     private float distance;
@@ -163,6 +166,21 @@ public class CustomAIMovement : MonoBehaviour
     {
         if (distance >= AOA && AOAToggle == true)
         {
+            for (int i = 0; i <= waypoints.Count; i++)
+            {
+                Debug.Log(i);
+                float dis = Vector2.Distance(waypoints[i].transform.position, transform.position);
+                seeker.StartPath(rb.position, waypoints[i].position, OnPathComplete);
+
+                if(dis <= .1)
+                {
+                    i++;
+                }
+
+            }
+        }
+        /*if (distance >= AOA && AOAToggle == true)
+        {
 
             seeker.StartPath(rb.position, nextPos.position, OnPathComplete);
 
@@ -184,6 +202,7 @@ public class CustomAIMovement : MonoBehaviour
         {
             return;
         }
+        */
 
     }
 
