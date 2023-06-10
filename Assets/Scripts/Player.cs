@@ -78,11 +78,6 @@ public class Player : MonoBehaviour
         StateEnterMove();
     }
 
-    
-
-    
-
-    
 
     void FixedUpdate()
     {
