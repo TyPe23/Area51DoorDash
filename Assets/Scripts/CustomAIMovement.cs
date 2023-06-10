@@ -35,6 +35,11 @@ public class CustomAIMovement : MonoBehaviour
 
     public Transform alertLocation;
 
+    public float rotationSpeed = 5; //Vision cone rotation speed
+
+    public float minimalAwareness;
+
+    public bool LOS;
 
     // Start is called before the first frame update
     void Start()
@@ -92,6 +97,13 @@ public class CustomAIMovement : MonoBehaviour
         {
             currentWaypoint++;
         }
+
+        // Calculate the angle in degrees
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Rotate the vision cone towards the target direction
+        Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }//End of FixedUpdate
 
     void OnPathComplete(Path p)
@@ -109,39 +121,39 @@ public class CustomAIMovement : MonoBehaviour
 
         if (seeker.IsDone()) //If the seeker is done calculating the path.
         {
-                if(alerted == true)
-                {
+            if (alerted == true)
+            {
                 seeker.StartPath(rb.position, alertLocation.position, OnPathComplete);
                 if (distance <= AOA && AOAToggle == true)
                 {
                     alerted = false;
                     return;
                 }
-                }
-                if (distance <= AOA && AOAToggle == true)
-                {
-                    seeker.StartPath(rb.position, player.position, OnPathComplete);
-                
-                }
-                if (AOAToggle == false)
-                {
-                    seeker.StartPath(rb.position, player.position, OnPathComplete);
-                }
+            }
+            if ((distance <= AOA && AOAToggle == true && player.GetComponent<AudioSource>().volume > .1) || distance < minimalAwareness || LOS == true)
+            {
+                seeker.StartPath(rb.position, player.position, OnPathComplete);
 
-                if (distance >= AOA && AOAToggle && reachedEndOfPath == true)
+            }
+            if (AOAToggle == false)
+            {
+                seeker.StartPath(rb.position, player.position, OnPathComplete);
+            }
+
+            if (distance >= AOA && AOAToggle && reachedEndOfPath == true)
+            {
+                timer -= Time.deltaTime;
+                Debug.Log(timer);
+                if (timer <= 0f)
                 {
-                    timer -= Time.deltaTime;
-                    Debug.Log(timer);
-                    if (timer <= 0f)
-                    {
-                        patrol();
-                        timer = delay;
-                    }
+                    patrol();
+                    timer = delay;
                 }
-            
-            
-               
-            
+            }
+
+
+
+
         }
 
 
