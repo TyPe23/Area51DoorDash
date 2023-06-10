@@ -131,8 +131,6 @@ public class Player : MonoBehaviour
 
     private void StateStayMove()
     {
-
-
         if (Input.GetKey(KeyCode.W))
         {
             transform.Translate(Vector2.up * speed * Time.fixedDeltaTime);
