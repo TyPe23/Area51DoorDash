@@ -21,8 +21,8 @@ public class Camera : MonoBehaviour
     private Dictionary<state, Action> statesEnterMeths;
     private Dictionary<state, Action> statesExitMeths;
 
-    private Transform startTransform;
     private Transform player;
+    private float startAngle;
     private Vector3 target1;
     private Vector3 target2;
     public Vector3 currTarget;
@@ -80,13 +80,7 @@ public class Camera : MonoBehaviour
             {state.INACTIVE, StateExitInactive},
         };
 
-        target1 = transform.rotation.eulerAngles;
-        target1 += new Vector3(rotAngle, 0, 0);
-
-        target2 = transform.rotation.eulerAngles;
-        target2 += new Vector3(-rotAngle, 0, 0);
-
-        startTransform = transform;
+        startAngle = transform.eulerAngles.x;
 
         state = state.RESET;
         StateEnterReset();
@@ -143,7 +137,6 @@ public class Camera : MonoBehaviour
 
     private void StateEnterScan()
     {
-        currTarget = target1;
     }
     #endregion
 
@@ -164,7 +157,7 @@ public class Camera : MonoBehaviour
     {
         float x = Mathf.PingPong(swivelSpeed * Time.time, rotAngle * 2);
 
-        transform.localEulerAngles = new Vector3(x - 45, -90, 0);
+        transform.localEulerAngles = new Vector3(x + startAngle - rotAngle, -90, 0);
     }
     #endregion
 
