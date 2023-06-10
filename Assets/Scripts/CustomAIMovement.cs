@@ -9,7 +9,7 @@ public class CustomAIMovement : MonoBehaviour
 
     public int meleeDamage;
     public float speed = 200f;
-    public float nextWaypointDistance = 3f;
+    public float nextWaypointDistance = 1f;
     public float pathUpdateSpeed = .2f;
     public float AOA = 100; //Area of Awareness
     public bool AOAToggle = false;
@@ -65,7 +65,8 @@ public class CustomAIMovement : MonoBehaviour
             return;
         }
 
-        if (currentWaypoint >= path.vectorPath.Count)
+
+        if (currentWaypoint + 1 >= path.vectorPath.Count)
         {
             reachedEndOfPath = true;
             Debug.Log("Reached End of path");
@@ -113,7 +114,7 @@ public class CustomAIMovement : MonoBehaviour
                 seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
 
-            if (distance >= AOA && AOAToggle == true)
+            if (distance >= AOA && AOAToggle && reachedEndOfPath == true)
             {
                 timer -= Time.deltaTime;
                 Debug.Log(timer);
