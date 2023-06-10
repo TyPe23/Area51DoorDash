@@ -134,25 +134,11 @@ public class Player : MonoBehaviour
 
     private void StateStayMove()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(Vector2.up * speed * Time.fixedDeltaTime);
-        }
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(Vector2.left * speed * Time.fixedDeltaTime);
-        }
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(Vector2.down * speed * Time.fixedDeltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(Vector2.right * speed * Time.fixedDeltaTime);
-        }
+        transform.Translate(new Vector2(x, y) * speed * Time.fixedDeltaTime);
     }
     #endregion
 
