@@ -8,12 +8,10 @@ using state = playerStates;
 public enum playerStates
 {
     MOVE,
+    CROUCH,
     HIT,
     DEATH,
     SPAWN,
-    GRABBED,
-    THROWN,
-    PRIME,
     ATTACK,
 }
 
@@ -32,7 +30,7 @@ public class Player : MonoBehaviour
     public AudioSource footSteps;
 
     public float speed;
-    private float crouchSpeed = 1;
+    private float crouchMod = 1;
     #endregion
 
     #region LifeCycle
@@ -49,6 +47,7 @@ public class Player : MonoBehaviour
         statesStayMeths = new Dictionary<state, Action>()
         {
             {state.MOVE, StateStayMove},
+            {state.CROUCH, StateStayCrouch},
             {state.HIT, StateStayHit},
             {state.DEATH, StateStaySpawn},
             {state.SPAWN, StateStayIdle},
@@ -58,6 +57,7 @@ public class Player : MonoBehaviour
         statesEnterMeths = new Dictionary<state, Action>()
         {
             {state.MOVE, StateEnterMove},
+            {state.CROUCH, StateEnterCrouch},
             {state.HIT, StateEnterHit},
             {state.DEATH, StateEnterDeath},
             {state.SPAWN, StateEnterSpawn},
@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
         statesExitMeths = new Dictionary<state, Action>()
         {
             {state.MOVE, StateExitMove},
+            {state.CROUCH, StateExitCrouch},
             {state.HIT, StateExitHit},
             {state.DEATH, StateExitDeath},
             {state.SPAWN, StateExitSpawn},
@@ -76,6 +77,12 @@ public class Player : MonoBehaviour
         state = state.MOVE;
         StateEnterMove();
     }
+
+    
+
+    
+
+    
 
     void FixedUpdate()
     {
@@ -125,6 +132,12 @@ public class Player : MonoBehaviour
 
     private void StateEnterMove()
     {
+        crouchMod = 1;
+
+    }
+    private void StateEnterCrouch()
+    {
+        crouchMod = 0.5f;
 
     }
     #endregion
@@ -151,18 +164,34 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            crouchSpeed = 0.5f;
+            ChangeState(state.CROUCH);
         }
         else
         {
-            crouchSpeed = 1;
+            crouchMod = 1;
         }
 
         Vector2 dir = new Vector2(x, y);
 
-        footSteps.volume = dir.magnitude * crouchSpeed / 2;
+        footSteps.volume = dir.magnitude * crouchMod / 4;
 
-        transform.Translate(dir * speed  * crouchSpeed * Time.fixedDeltaTime);
+        transform.Translate(dir * speed  * crouchMod * Time.fixedDeltaTime);
+    }
+    private void StateStayCrouch()
+    {
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+
+        if (!Input.GetKey(KeyCode.LeftShift))
+        {
+            ChangeState(state.MOVE);
+        }
+
+        Vector2 dir = new Vector2(x, y);
+
+        footSteps.volume = dir.magnitude * crouchMod / 8;
+
+        transform.Translate(dir * speed * crouchMod * Time.fixedDeltaTime);
     }
     #endregion
 
@@ -190,6 +219,10 @@ public class Player : MonoBehaviour
     private void StateExitMove()
     {
 
+    }
+
+    private void StateExitCrouch()
+    {
     }
     #endregion
 
