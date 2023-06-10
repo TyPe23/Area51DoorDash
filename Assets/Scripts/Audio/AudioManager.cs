@@ -3,7 +3,6 @@ using UnityEngine;
 
 public enum SoundType
 {
-    STEPS,
     ALERT,
     ATTACK,
     BUTTON,
@@ -80,7 +79,6 @@ public class AudioManager : MonoBehaviour
     {
         audioSrc = GetComponent<AudioSource>();
         sounds = new Dictionary<SoundType, SoundCollection>() {
-            {SoundType.STEPS, new SoundCollection("") },
             {SoundType.ATTACK, new SoundCollection("") },
             {SoundType.ALERT, new SoundCollection("") },
             {SoundType.BUTTON, new SoundCollection("") },
