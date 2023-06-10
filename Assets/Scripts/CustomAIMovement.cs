@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Pathfinding;
+using UnityEngine;
 
 public class CustomAIMovement : MonoBehaviour
 {
-    private Transform target;
+    private Transform player;
 
     private float distance;
 
@@ -21,6 +19,12 @@ public class CustomAIMovement : MonoBehaviour
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
 
+    
+
+    public Transform waypoint1;
+    public Transform waypoint2;
+    Transform nextPos;
+
     Seeker seeker;
     Rigidbody2D rb;
 
@@ -30,12 +34,13 @@ public class CustomAIMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        nextPos = waypoint1;
         if (randomizerToggle == true)
         {
             Randomizer();
         }
 
-        target = FindObjectOfType<Player>().transform;
+        player = FindObjectOfType<Player>().transform;
 
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
@@ -45,7 +50,7 @@ public class CustomAIMovement : MonoBehaviour
 
     private void Update()
     {
-       // anim.SetFloat("Direction", rb.velocity.normalized.x);
+        // anim.SetFloat("Direction", rb.velocity.normalized.x);
         //anim.SetFloat("Direction", rb.velocity.normalized.y);
     }
     void FixedUpdate() //Ideal when working with physics
@@ -90,20 +95,44 @@ public class CustomAIMovement : MonoBehaviour
 
     void UpdatePath()
     {
-        distance = Vector2.Distance(target.position, transform.position);
+        distance = Vector2.Distance(player.position, transform.position);
 
         if (seeker.IsDone())
         {
             if (distance <= AOA && AOAToggle == true)
             {
-                seeker.StartPath(rb.position, target.position, OnPathComplete);
+                seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
             if (AOAToggle == false)
             {
-                seeker.StartPath(rb.position, target.position, OnPathComplete);
+                seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
+
+
+            //patrol
+
+            if (distance >= AOA && AOAToggle == true)
+            {
+                seeker.StartPath(rb.position, nextPos.position, OnPathComplete);
+
+                float dis1 = Vector2.Distance(waypoint1.transform.position, transform.position);
+                float dis2 = Vector2.Distance(waypoint2.transform.position, transform.position);
+
+                if (dis1 <= 1)
+                {
+                    nextPos = waypoint2;
+
+                }
+                if (dis2 <= 1)
+                {
+                    nextPos = waypoint1;
+
+                }
+            }
+
         }
     }// End of UpdatePath
+
 
     void OnDrawGizmosSelected()
     {
@@ -134,8 +163,8 @@ public class CustomAIMovement : MonoBehaviour
         if (distance <= attackRange /*&& !invuln.invul*/)
         {
 
-           // target.gameObject.GetComponent<SuperPupSystems.Helper.Health>().Damage(meleeDamage); //Logans Code. Works with Erics Health Script.
-           // anim.SetTrigger("Attack");
+            // target.gameObject.GetComponent<SuperPupSystems.Helper.Health>().Damage(meleeDamage); //Logans Code. Works with Erics Health Script.
+            // anim.SetTrigger("Attack");
         }
         else
         {
@@ -146,7 +175,7 @@ public class CustomAIMovement : MonoBehaviour
 
     public void Die()
     {
-       // anim.SetTrigger("Death");
+        // anim.SetTrigger("Death");
     }
 
 
