@@ -22,25 +22,30 @@ public class Camera : MonoBehaviour
     private Dictionary<state, Action> statesExitMeths;
 
     private Transform player;
-    private float startAngle;
     private Vector3 target1;
     private Vector3 target2;
-    public Vector3 currTarget;
+    private Color alertColor = new Color(1, 0, 0, 0.5f);
+    private Color scanColor = new Color(1, 1, 0, 0.5f);
 
     public camStates state;
     public camStates prevState;
     public bool alerted;
-
-
+    public Vector3 currTarget;
 
     [SerializeField]
     private GameObject vision;
+
+    [SerializeField]
+    private CustomAIMovement[] guards;
     
     [SerializeField]
     private float rotAngle = 45;
     
     [SerializeField]
     private float swivelSpeed = 30;
+
+    [SerializeField]
+    private float startAngle = 0;
 
     // whether or not the camera is able to scan back and forth or is static
     [SerializeField]
@@ -80,8 +85,6 @@ public class Camera : MonoBehaviour
             {state.INACTIVE, StateExitInactive},
         };
 
-        startAngle = transform.eulerAngles.x;
-
         state = state.RESET;
         StateEnterReset();
     }
@@ -104,7 +107,7 @@ public class Camera : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && state == state.SCAN)
+        if (collision.CompareTag("Player") && (state == state.SCAN || state == state.RESET))
         {
             ChangeState(state.ALERT);
         }
@@ -133,6 +136,13 @@ public class Camera : MonoBehaviour
     private void StateEnterAlert()
     {
         alerted = true;
+        vision.GetComponent<SpriteRenderer>().color = alertColor;
+        Transform playerPos = GameObject.FindWithTag("Player").transform;
+        foreach (CustomAIMovement guard in guards)
+        {
+            guard.alerted = true;
+            guard.alertLocation = playerPos;
+        }
     }
 
     private void StateEnterScan()
@@ -175,6 +185,7 @@ public class Camera : MonoBehaviour
     private void StateExitAlert()
     {
         alerted = false;
+        vision.GetComponent<SpriteRenderer>().color = scanColor;
     }
 
     private void StateExitScan()
@@ -187,7 +198,11 @@ public class Camera : MonoBehaviour
     private IEnumerator resetCam()
     {
         yield return new WaitForSeconds(3);
-        ChangeState(state.SCAN);
+
+        if (state == state.RESET)
+        {
+            ChangeState(state.SCAN);
+        }
     }
     #endregion
 }
