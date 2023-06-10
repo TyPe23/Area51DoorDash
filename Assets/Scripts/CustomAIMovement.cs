@@ -19,7 +19,7 @@ public class CustomAIMovement : MonoBehaviour
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
 
-    public float Delay = 6.0f;
+    public float delay;
     public Transform waypoint1;
     public Transform waypoint2;
     Transform nextPos;
@@ -29,10 +29,13 @@ public class CustomAIMovement : MonoBehaviour
 
     public Animator anim;
 
+    float timer;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        timer = delay;
         nextPos = waypoint1;
         if (randomizerToggle == true)
         {
@@ -54,15 +57,18 @@ public class CustomAIMovement : MonoBehaviour
     }
     void FixedUpdate() //Ideal when working with physics
     {
+
         Attack();
         if (path == null)
         {
+            Debug.LogWarning("No path");
             return;
         }
 
         if (currentWaypoint >= path.vectorPath.Count)
         {
             reachedEndOfPath = true;
+            Debug.Log("Reached End of path");
         }
 
         else
@@ -92,11 +98,11 @@ public class CustomAIMovement : MonoBehaviour
         }
     }//End of OnPathComplete
 
-    void UpdatePath()
+    void UpdatePath()//Repeating function to update the path.
     {
         distance = Vector2.Distance(player.position, transform.position);
 
-        if (seeker.IsDone())
+        if (seeker.IsDone()) //If the seeker is done calculating the path.
         {
             if (distance <= AOA && AOAToggle == true)
             {
@@ -106,14 +112,28 @@ public class CustomAIMovement : MonoBehaviour
             {
                 seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
-            Invoke("patrol", Delay);
+
+            if (distance >= AOA && AOAToggle == true)
+            {
+                timer -= Time.deltaTime;
+                Debug.Log(timer);
+                if(timer <= 0f)
+                {
+                    patrol();
+                    timer = delay;
+                }
+                
+            }
         }
+
+
     }// End of UpdatePath
 
     void patrol()
     {
         if (distance >= AOA && AOAToggle == true)
         {
+
             seeker.StartPath(rb.position, nextPos.position, OnPathComplete);
 
             float dis1 = Vector2.Distance(waypoint1.transform.position, transform.position);
@@ -130,6 +150,11 @@ public class CustomAIMovement : MonoBehaviour
 
             }
         }
+        else
+        {
+            return;
+        }
+
     }
 
 
