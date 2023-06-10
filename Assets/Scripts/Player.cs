@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     public playerStates state;
     public playerStates prevState;
 
+    private AudioSource soundSrc;
+
     public float speed;
     #endregion
 
@@ -39,6 +41,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        soundSrc = GetComponent<AudioSource>();
+
         statesStayMeths = new Dictionary<state, Action>()
         {
             {state.MOVE, StateStayMove},
@@ -90,7 +94,6 @@ public class Player : MonoBehaviour
     #region Enter
     private void StateEnterAttack()
     {
-
     }
 
     private void StateEnterSpawn()
@@ -100,7 +103,7 @@ public class Player : MonoBehaviour
 
     private void StateEnterDeath()
     {
-
+        Game.globalInstance.sndPlayer.PlaySound(SoundType.DEATH, soundSrc);
     }
 
     private void StateEnterHit()
