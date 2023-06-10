@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using state = playerStates;
 
@@ -89,6 +90,15 @@ public class Player : MonoBehaviour
             statesEnterMeths[state].Invoke();
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        print(collision.gameObject.name);
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            ChangeState(state.HIT);
+        }
+    }
     #endregion
 
     #region Enter
@@ -108,7 +118,7 @@ public class Player : MonoBehaviour
 
     private void StateEnterHit()
     {
-
+        StartCoroutine(hitStun());
     }
 
     private void StateEnterMove()
@@ -170,6 +180,10 @@ public class Player : MonoBehaviour
     #endregion
 
     #region HELPER
-
+    private IEnumerator hitStun()
+    {
+        yield return new WaitForSeconds(0.25f);
+        ChangeState(state.MOVE);
+    }
     #endregion
 }
