@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 00041227cbfbdf44e95a16c3b85a5d09
+guid: 7e825bba416e5564d91fa6fe1399d750
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 56
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: guard-walking-upsheet_0
+      name: mc-walking-front-sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c2d8cc2a9d56964f92a067f5603be94
-      internalID: 482184745
+      spriteID: cbde6e29e268e8f4a80026a7223525aa
+      internalID: 1980521170
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: guard-walking-upsheet_1
+      name: mc-walking-front-sheet_1
       rect:
         serializedVersion: 2
         x: 56
@@ -152,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b64e6a68bc03bca4fa05db433832e120
-      internalID: 2110728508
+      spriteID: acf719d785a227e4a998de52c9869ea7
+      internalID: -1615674956
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: guard-walking-upsheet_2
+      name: mc-walking-front-sheet_2
       rect:
         serializedVersion: 2
         x: 112
@@ -173,8 +173,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4b3b502e46c64c4eb89536271bebdac
-      internalID: 1594048150
+      spriteID: 1f0739ca99e05fa488e10d33b97c7004
+      internalID: -1642995401
       vertices: []
       indices: 
       edges: []
@@ -190,9 +190,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      guard-walking-upsheet_0: 482184745
-      guard-walking-upsheet_2: 1594048150
-      guard-walking-upsheet_1: 2110728508
+      mc-walking-front-sheet_0: 1980521170
+      mc-walking-front-sheet_1: -1615674956
+      mc-walking-front-sheet_2: -1642995401
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
