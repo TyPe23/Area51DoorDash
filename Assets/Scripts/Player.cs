@@ -144,8 +144,8 @@ public class Player : MonoBehaviour
 
     private void StateStayMove()
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
 
 
         transform.Translate(new Vector2(x, y) * speed * Time.fixedDeltaTime);
