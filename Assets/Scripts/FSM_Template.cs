@@ -17,7 +17,7 @@ public enum enemyStates
 }
 
 [RequireComponent(typeof(AudioSource))]
-public class Enemy : MonoBehaviour
+public class FSM_Template : MonoBehaviour
 {
     #region FILEDS & PROPERTIES
     private Dictionary<state, Action> statesStayMeths;
