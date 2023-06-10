@@ -31,6 +31,10 @@ public class CustomAIMovement : MonoBehaviour
 
     float timer;
 
+    public bool alerted;
+
+    public Transform alertLocation;
+
 
     // Start is called before the first frame update
     void Start()
@@ -105,26 +109,39 @@ public class CustomAIMovement : MonoBehaviour
 
         if (seeker.IsDone()) //If the seeker is done calculating the path.
         {
-            if (distance <= AOA && AOAToggle == true)
-            {
-                seeker.StartPath(rb.position, player.position, OnPathComplete);
-            }
-            if (AOAToggle == false)
-            {
-                seeker.StartPath(rb.position, player.position, OnPathComplete);
-            }
-
-            if (distance >= AOA && AOAToggle && reachedEndOfPath == true)
-            {
-                timer -= Time.deltaTime;
-                Debug.Log(timer);
-                if(timer <= 0f)
+                if(alerted == true)
                 {
-                    patrol();
-                    timer = delay;
+                seeker.StartPath(rb.position, alertLocation.position, OnPathComplete);
+                if (distance <= AOA && AOAToggle == true)
+                {
+                    alerted = false;
+                    return;
                 }
+                }
+                if (distance <= AOA && AOAToggle == true)
+                {
+                    seeker.StartPath(rb.position, player.position, OnPathComplete);
                 
-            }
+                }
+                if (AOAToggle == false)
+                {
+                    seeker.StartPath(rb.position, player.position, OnPathComplete);
+                }
+
+                if (distance >= AOA && AOAToggle && reachedEndOfPath == true)
+                {
+                    timer -= Time.deltaTime;
+                    Debug.Log(timer);
+                    if (timer <= 0f)
+                    {
+                        patrol();
+                        timer = delay;
+                    }
+                }
+            
+            
+               
+            
         }
 
 
