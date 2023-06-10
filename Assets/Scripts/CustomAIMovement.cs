@@ -19,8 +19,7 @@ public class CustomAIMovement : MonoBehaviour
     int currentWaypoint = 0;
     bool reachedEndOfPath = false;
 
-    
-
+    public float Delay = 6.0f;
     public Transform waypoint1;
     public Transform waypoint2;
     Transform nextPos;
@@ -107,31 +106,31 @@ public class CustomAIMovement : MonoBehaviour
             {
                 seeker.StartPath(rb.position, player.position, OnPathComplete);
             }
-
-
-            //patrol
-
-            if (distance >= AOA && AOAToggle == true)
-            {
-                seeker.StartPath(rb.position, nextPos.position, OnPathComplete);
-
-                float dis1 = Vector2.Distance(waypoint1.transform.position, transform.position);
-                float dis2 = Vector2.Distance(waypoint2.transform.position, transform.position);
-
-                if (dis1 <= 1)
-                {
-                    nextPos = waypoint2;
-
-                }
-                if (dis2 <= 1)
-                {
-                    nextPos = waypoint1;
-
-                }
-            }
-
+            Invoke("patrol", Delay);
         }
     }// End of UpdatePath
+
+    void patrol()
+    {
+        if (distance >= AOA && AOAToggle == true)
+        {
+            seeker.StartPath(rb.position, nextPos.position, OnPathComplete);
+
+            float dis1 = Vector2.Distance(waypoint1.transform.position, transform.position);
+            float dis2 = Vector2.Distance(waypoint2.transform.position, transform.position);
+
+            if (dis1 <= 1)
+            {
+                nextPos = waypoint2;
+
+            }
+            if (dis2 <= 1)
+            {
+                nextPos = waypoint1;
+
+            }
+        }
+    }
 
 
     void OnDrawGizmosSelected()
