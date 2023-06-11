@@ -7,10 +7,14 @@ public class DoorDash : MonoBehaviour
 
     public List<GameObject> food = new List<GameObject>();
 
+    private GameManager GM;
+
     // Start is called before the first frame update
     void Start()
     {
+        GM = FindObjectOfType<GameManager>();
         dialogue = FindObjectOfType<Dialogue>().gameObject;
+       // GM.door.Add(gameObject);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -25,6 +29,8 @@ public class DoorDash : MonoBehaviour
                 { */
                     Instantiate(food[Randomizer()], GetComponentInChildren<Transform>());
                     FindObjectOfType<HealthManager>().rating++;
+                //GM.door.Remove(gameObject);
+                GM.door ++;
                // }
                
             }

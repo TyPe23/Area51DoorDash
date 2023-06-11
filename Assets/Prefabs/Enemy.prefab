@@ -198,10 +198,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypoints: []
   meleeDamage: 0
-  speed: 200
+  speed: 725
   nextWaypointDistance: 3
   pathUpdateSpeed: 0.2
-  AOA: 7.1
+  AOA: 4
   AOAToggle: 1
   attackRange: 1
   randomizerToggle: 0
@@ -214,6 +214,7 @@ MonoBehaviour:
   rotationSpeed: 5
   minimalAwareness: 3
   LOS: 0
+  fireRate: 0.9
 --- !u!114 &6108423475061359535
 MonoBehaviour:
   m_ObjectHideFlags: 0

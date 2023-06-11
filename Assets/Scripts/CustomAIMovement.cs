@@ -170,6 +170,7 @@ public class CustomAIMovement : MonoBehaviour
 
     void patrol()
     {
+        /*
         if (distance >= AOA && AOAToggle == true)
         {
             for (int i = 0; i <= waypoints.Count; i++)
@@ -184,8 +185,8 @@ public class CustomAIMovement : MonoBehaviour
                 }
 
             }
-        }
-        /*if (distance >= AOA && AOAToggle == true)
+        }*/
+        if (distance >= AOA && AOAToggle == true)
         {
 
             seeker.StartPath(rb.position, nextPos.position, OnPathComplete);
@@ -208,7 +209,6 @@ public class CustomAIMovement : MonoBehaviour
         {
             return;
         }
-        */
 
     }
 
