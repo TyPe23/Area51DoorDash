@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using state = playerStates;
 
@@ -32,7 +31,10 @@ public class Player : MonoBehaviour
     public float speed;
     private float crouchMod = 1;
 
+    bool crouching;
+
     private HealthManager health;
+    private Animator anim;
     #endregion
 
     #region LifeCycle
@@ -44,8 +46,11 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponentInChildren<Animator>();
         soundSrc = GetComponent<AudioSource>();
         health = GetComponent<HealthManager>();
+
+
 
         statesStayMeths = new Dictionary<state, Action>()
         {
@@ -160,9 +165,15 @@ public class Player : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+        Vector2 dir = new Vector2(x, y);
+
+        anim.SetFloat("DirX", x);
+        anim.SetFloat("DirY", y);
+        anim.SetFloat("Speed", dir.sqrMagnitude);
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            crouching = true;
             ChangeState(state.CROUCH);
         }
         else
@@ -170,23 +181,37 @@ public class Player : MonoBehaviour
             crouchMod = 1;
         }
 
-        Vector2 dir = new Vector2(x, y);
+
 
         footSteps.volume = dir.magnitude * crouchMod / 4;
 
-        transform.Translate(dir * speed  * crouchMod * Time.fixedDeltaTime);
+        transform.Translate(dir * speed * crouchMod * Time.fixedDeltaTime);
     }
     private void StateStayCrouch()
     {
+
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
 
+        Vector2 dir = new Vector2(x, y);
+
+        anim.SetFloat("DirX", x);
+        anim.SetFloat("DirY", y);
+        anim.SetFloat("Speed", dir.sqrMagnitude);
+
+
+        anim.SetBool("Crouching", crouching);
+
+
+
+
         if (!Input.GetKey(KeyCode.LeftShift))
         {
+
+            crouching = false;
+            anim.SetBool("Crouching", crouching);
             ChangeState(state.MOVE);
         }
-
-        Vector2 dir = new Vector2(x, y);
 
         footSteps.volume = dir.magnitude * crouchMod / 8;
 
