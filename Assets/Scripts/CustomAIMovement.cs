@@ -1,7 +1,6 @@
 using Pathfinding;
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class CustomAIMovement : MonoBehaviour
 {
@@ -44,6 +43,8 @@ public class CustomAIMovement : MonoBehaviour
 
     public bool LOS;
 
+    private Vector2 movement;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +56,7 @@ public class CustomAIMovement : MonoBehaviour
         }
 
         player = FindObjectOfType<Player>().transform;
-
+        anim = GetComponentInChildren<Animator>();
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -64,8 +65,10 @@ public class CustomAIMovement : MonoBehaviour
 
     private void Update()
     {
-        // anim.SetFloat("Direction", rb.velocity.normalized.x);
-        //anim.SetFloat("Direction", rb.velocity.normalized.y);
+        anim.SetFloat("DirX", rb.velocity.normalized.x);
+        anim.SetFloat("DirY", rb.velocity.normalized.y);
+        movement = new Vector2(rb.velocity.normalized.x, rb.velocity.normalized.y);
+        anim.SetFloat("Speed", movement.sqrMagnitude);
     }
     void FixedUpdate() //Ideal when working with physics
     {
@@ -172,7 +175,7 @@ public class CustomAIMovement : MonoBehaviour
                 float dis = Vector2.Distance(waypoints[i].transform.position, transform.position);
                 seeker.StartPath(rb.position, waypoints[i].position, OnPathComplete);
 
-                if(dis <= .1)
+                if (dis <= .1)
                 {
                     i++;
                 }
