@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
@@ -8,12 +9,12 @@ public class HealthManager : MonoBehaviour
     private GameObject[] stars;
 
     //public int Rating { get; private set; }
-    public int Rating;// { get; private set; }
+    public int rating;// { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        Rating = 10;
+        rating = 10;
     }
 
     // Update is called once per frame
@@ -24,17 +25,22 @@ public class HealthManager : MonoBehaviour
             star.SetActive(false);
         }
 
-        for (int i = 0; i <= Rating - 1; i++)
+        for (int i = 0; i <= rating - 1; i++)
         {
             stars[i].SetActive(true);
+        }
+
+        if(rating == 0)
+        {
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
     public void reduceRating()
     {
-        if (Rating > 0)
+        if (rating > 0)
         {
-           Rating--;
+           rating--;
         }
     }
 }

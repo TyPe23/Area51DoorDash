@@ -45,6 +45,9 @@ public class CustomAIMovement : MonoBehaviour
 
     private Vector2 movement;
 
+    private float nextFireTime;
+    public float fireRate = 2f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -236,11 +239,15 @@ public class CustomAIMovement : MonoBehaviour
     void Attack()
     {
 
-        if (distance <= attackRange /*&& !invuln.invul*/)
+        if (distance <= attackRange && Time.time >= nextFireTime /*&& !invuln.invul*/)
         {
 
             // target.gameObject.GetComponent<SuperPupSystems.Helper.Health>().Damage(meleeDamage); //Logans Code. Works with Erics Health Script.
             // anim.SetTrigger("Attack");
+
+            Debug.Log("Attack");
+            player.GetComponent<HealthManager>().reduceRating();
+            nextFireTime = Time.time + fireRate;
         }
         else
         {

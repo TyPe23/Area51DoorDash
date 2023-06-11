@@ -255,7 +255,7 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
 
-        if (health.Rating > 0)
+        if (health.rating > 0)
         {
             ChangeState(state.MOVE);
         }
