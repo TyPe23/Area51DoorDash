@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
 
     public float speed;
     private float crouchMod = 1;
+
+    private HealthManager health;
     #endregion
 
     #region LifeCycle
@@ -43,6 +45,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         soundSrc = GetComponent<AudioSource>();
+        health = GetComponent<HealthManager>();
 
         statesStayMeths = new Dictionary<state, Action>()
         {
@@ -122,6 +125,7 @@ public class Player : MonoBehaviour
 
     private void StateEnterHit()
     {
+        health.reduceRating();
         StartCoroutine(hitStun());
     }
 
@@ -225,7 +229,11 @@ public class Player : MonoBehaviour
     private IEnumerator hitStun()
     {
         yield return new WaitForSeconds(0.25f);
-        ChangeState(state.MOVE);
+
+        if (health.Rating > 0)
+        {
+            ChangeState(state.MOVE);
+        }
     }
     #endregion
 }
